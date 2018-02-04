@@ -1,0 +1,94 @@
+# 实时系统资源使用情况
+
+观察系统的进程状态、内存使用、虚拟内存使用、磁盘的IO、中断、上下文切换、CPU使用等
+vmstat 1 5
+监控系统磁盘的IO性能情况
+iostat -dkx 1 5
+统计当前所有的连接数情况
+netstat -nat| awk '{print $6}'| sort | uniq -c
+查出哪个ip地址连接最多
+netstat -na|grep ESTABLISHED|awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c
+查看占用CPU最大的5个进程
+ps -aux 2> /dev/null |sort -k3nr|head -n 5|awk 'BEGIN{print "%CPU\tPID\tCOMMAD"}{print $4,'\t',$2,'\t',$11}'
+查看占用内存最大的进程
+ps -aux 2> /dev/null | sort -k4nr |head -n 5 | awk 'BEGIN{print "%MEM\tPID\tCOMMAD"}{print $4,'\t',$2,'\t',$11}'
+
+
+
+
+# 历史系统资源使用情况
+sar -A > /tmp/sar.log
+
+
+SAR
+选项 功能
+-A 汇总所有的报告
+-a 报告文件读写使用情况
+-B 报告附加的缓存的使用情况
+-b 报告缓存的使用情况
+-c 报告系统调用的使用情况
+-d 报告磁盘的使用情况
+-g 报告串口的使用情况
+-h 报告关于buffer使用的统计数据
+-m 报告IPC消息队列和信号量的使用情况
+-n 报告命名cache的使用情况
+-p 报告调页活动的使用情况
+-q 报告运行队列和交换队列的平均长度
+-R 报告进程的活动情况
+-r 报告没有使用的内存页面和硬盘块
+-u 报告CPU的利用率
+-v 报告进程、i节点、文件和锁表状态
+-w 报告系统交换活动状况
+-y 报告TTY设备活动状况
+
+怀疑CPU存在瓶颈sqr -q -u不添加采集间隔和采集次数，默认显示最近24小时，每隔10分钟的性能数据
+怀疑内存存在瓶颈，可用 sar -B、sar -r和 sar -W 等来查看
+怀疑I/O存在瓶颈，可用 sar -b、sar -u 和 sar -d等来查看
+
+
+# 查出哪个ip地址连接最多
+netstat -na|grep ESTABLISHED|awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c
+
+# 统计6379端口的连接数
+netstat -nat|grep -i "6379"|wc -l
+
+#分析连接数最多的两个ip的详情
+netstat -nap|grep 180.173.149.141|head -n 10
+
+
+# 统计连接且状态为“ESTABLISHED” 
+ netstat -an | grep 6379|wc -l
+ 
+# 查出哪个ip地址连接最多，将其封了
+netstat -na|grep ESTABLISHED|awk '{print $5}'|awk -F: '{print $1}'|sort|uniq -c
+
+# 截取包含某个字符串的文件
+
+grep -R --include="*.php" "Redis()" ./ > /home/zyadmin/booboo.txt 2> /dev/null
+
+
+# 查看io
+
+iostat -xkd 1
+
+# 查看系统负载
+vmstat
+top 
+top -u mysql
+
+# 内存cpu
+lscpu
+free -m
+
+# 查看文件句柄数
+lsof -n | grep pid -c
+
+# 远程传输
+
+A
+
+nc -l port > file
+
+B
+
+nc ip port < file

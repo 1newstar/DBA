@@ -1,0 +1,62 @@
+# 索引存放在statistics
+# 表存放在tables
+# 列存放在columns
+
+
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_app_case' and column_name in ('app_id','approve_rst','case_id')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_app_consumptioninst' and column_name in ('app_id','applicant_huko_city','APPLICANT_HUKO_COUNTY','applicant_huko_province','company_city','company_province','CUR_HOME_CITY','CUR_HOME_COUNTY','CUR_HOME_PROVINCE','EDUCTION_LEVEL','leafOrg','MARITAL_STATUS','merchant_cde','src_case_id','store_cde')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_case_survey' and column_name in ('case_id' ,'survey_result')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_loan_monitoring' and column_name in ('APPLICATIon_NUMBER','contract_id','id','report_id')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_loan_risklist' and column_name in ('report_id')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_return_hit_rule_record' and column_name in ('case_id','rule_id')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='cm_return_visit_case' and column_name in ('app_id','case_id','create_time','customer_result_code','sales_result_code','store_result_code')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='fe_org_relation' and column_name in ('org_id','company_name')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='fe_business' and column_name in ('id')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='lm_account' and column_name in ('contract_id','id','status')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='lm_contract_history' and column_name in ('application_number','id')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='lm_repayment_plan' and column_name in ('contract_id','tenor')
+union
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where table_name='pr_code_table' and column_name in ('id','type_id');
+
+-------------
+select table_schema,table_name,index_name,index_type,column_name from STATISTICS where (table_name='cm_app_case' and column_name in ('app_id','approve_rst','case_id')) or  (table_name='cm_app_consumptioninst' and column_name in ('app_id','applicant_huko_city','APPLICANT_HUKO_COUNTY','applicant_huko_province','company_city','company_province','CUR_HOME_CITY','CUR_HOME_COUNTY','CUR_HOME_PROVINCE','EDUCTION_LEVEL','leafOrg','MARITAL_STATUS','merchant_cde','src_case_id','store_cde')) or
+(table_name='cm_case_survey' and column_name in ('case_id' ,'survey_result')) or 
+(table_name='cm_loan_monitoring' and column_name in ('APPLICATIon_NUMBER','contract_id','id','report_id')) or
+(table_name='cm_loan_risklist' and column_name in ('report_id')) or
+(table_name='cm_return_hit_rule_record' and column_name in ('case_id','rule_id')) or
+(table_name='cm_return_visit_case' and column_name in ('app_id','case_id','create_time','customer_result_code','sales_result_code','store_result_code')) or
+(table_name='fe_org_relation' and column_name in ('org_id','company_name') ) or
+(table_name='fe_business' and column_name in ('id')) or
+(table_name='lm_account' and column_name in ('contract_id','id','status')) or
+(table_name='lm_contract_history' and column_name in ('application_number','id')) or
+(table_name='lm_repayment_plan' and column_name in ('contract_id','tenor')) or
+(table_name='pr_code_table' and column_name in ('id','type_id'));
+-----------------------------
+--------------------------
+
+select table_schema,table_name,column_name from columns where table_name='cm_app_consumptioninst' and column_name in ('applicant_huko_city','APPLICANT_HUKO_COUNTY','applicant_huko_province','company_city','company_province','CUR_HOME_CITY','CUR_HOME_COUNTY','CUR_HOME_PROVINCE','EDUCTION_LEVEL','leafOrg','MARITAL_STATUS')
+union
+select table_schema,table_name,column_name from columns where table_name='cm_case_survey' and column_name in ('survey_result')
+union
+select table_schema,table_name,column_name from columns where table_name='cm_loan_monitoring' and column_name in ('APPLICATIon_NUMBER','contract_id')
+union
+select table_schema,table_name,column_name from columns where table_name='cm_return_hit_rule_record' and column_name in ('rule_id')
+union
+select table_schema,table_name,column_name from columns where table_name='cm_return_visit_case' and column_name in ('create_time','customer_result_code','sales_result_code','store_result_code')
+union
+select table_schema,table_name,column_name from columns where table_name='fe_org_relation' and column_name in ('company_name');
+
+
+
+

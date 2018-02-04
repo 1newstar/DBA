@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Linux系统硬件检测报告</title>
+</head>
+
+<body>
+<h1>Linux系统硬件检测报告</h1>
+<p><i>驻云DBA组</i>
+<h4>检测时间：
+<script language=Javascript>
+var now=new Date()
+document.write(1900+now.getYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds())
+</script>
+</div>
+</p>
+</h4>
+<h4>检测对象：{{ hostname }}</h4>
+
+<p>1. Release</p>
+<pre>{{ a.kernel }}</pre>
+
+<p>2. CPU</p>
+<pre>{{ a.cpu }}</pre>
+
+<p>3. Kernel</p>
+<pre>{{ a.kernel }}</pre>
+
+<p>4. Mem</p>
+<pre>{{ a.mem }}</pre>
+
+<p>5. Disk</p>
+<pre>{{ a.disk }}</pre>
+
+<pre>The END</pre>
+
+</body>
+
+
+
+</html>

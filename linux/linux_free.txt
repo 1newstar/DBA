@@ -1,0 +1,14 @@
+root@od-mongdb-01:~# free -m
+              total        used        free      shared  buff/cache   available
+Mem:          32175       11258       12785           4        8131       20419
+Swap:             0           0           0
+
+A=total=32175 #总内存32G
+B=used=11258 #已经被程序使用的11G
+C=free=12785 #未分配的内存 12G
+D=shared=4   #无法回收的共享内存 4M
+E=buff/cache=8131 #分配未使用的内存 8G
+F=available=20419 #可使用内存
+
+A=B+C+E 
+F=C+E-D-其他无法回收的内存

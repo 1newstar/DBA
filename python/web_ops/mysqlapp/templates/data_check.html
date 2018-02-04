@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MySQL数据库检测报告</title>
+</head>
+<body>
+<h1>MySQL数据库检测报告</h1>
+<p><i>驻云DBA组</i></p>
+
+<pre>
+检测对象：{{ dbhostname }}
+检测开始时间：{{ now_time }}
+检测结束时间：{{ current_time }}
+</pre>
+
+<h2>MySQL数据库信息报告</h2>
+
+<p>数据库基本状态信息：</p>
+<pre>{{ a.status_report }}</pre>
+
+<p>1. 库的数据量和索引量统计</p>
+<pre>{{ a.summary_size_report }}</pre>
+
+<p>2. 库的数据量和索引量统计</p>
+<pre>{{ a.database_data_report }}</pre>
+
+<p>3. 表的数据量和索引量，行数统计前十</p>
+<pre>{{ a.table_data_report }}</pre>
+
+<p>4. 表数据量统计以及不同存储引擎表的数量统计</p>
+<pre>{{ a.table_and_engine_report }}</pre>
+
+<p>5. 数据和索引量统计和占比</p>
+<pre>{{ a.summary_size_report }}</pre>
+
+<p>6. innodb存储引擎情况</p>
+<pre>{{ a.innodb_engine_report }}</pre>
+
+<p>7. myisam存储引擎情况</p>
+<pre>{{ a.myiasm_engine_report }}</pre>
+
+
+<h2>MySQL数据库检查专项报告</h2>
+
+<p>1. 检查死锁情况</p>
+
+<pre>
+{% for k,v in a.check_dead_lock.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>2. 检查innodb行锁等待</p>
+
+<pre>
+{% for k,v in a.check_innodb_lock.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>3. 检查慢查询情况</p>
+<pre>
+{% for k,v in a.check_slowlog.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>4. 检查失败连接的比率</p>
+<pre>
+{% for k,v in a.check_ratio_aborterd_connections.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>5. 检查最大连接数占比</p>
+<pre>
+{% for k,v in a.check_ratio_max_connections.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>6. 检查binlog情况</p>
+<pre>
+{% for k,v in a.check_binlog.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+
+<p>7. 检查innodb情况</p>
+<pre>
+{% for k,v in a.check_innodb.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>8. 检查临时表使用情况</p>
+<pre>
+{% for k,v in a.check_table_scans.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>9. 检查open table的情况</p>
+<pre>
+{% for k,v in a.check_open_table.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>10. 检查进程使用情况</p>
+<pre>
+{% for k,v in a.check_threads.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>11. 检查查询缓存是否关闭</p>
+<pre>
+{% for k,v in a.check_query_cache_type.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>12. 检查排序缓存使用情况</p>
+<pre>
+{% for k,v in a.check_sort_buffer.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<p>13. 检查join缓存使用情况</p>
+<pre>
+{% for k,v in a.check_join_buffer_size.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+
+<p>14. 检查打开的文件数情况</p>
+<pre>
+{% for k,v in a.check_open_files_limit.items() %}
+    {{ k }}:  {{ v }}
+{% endfor %}
+</pre>
+
+<pre>The END</pre>
+
+
+</body>
+
+
+
+</html>

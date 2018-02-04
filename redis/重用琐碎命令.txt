@@ -1,0 +1,34 @@
+# redis-benchmark
+
+http://www.redis.cn/topics/benchmarks.html
+
+redis-benchmark -q -n 100000
+
+# 查看redis的客户端
+
+redis-cli -a xxxx -p 6380 client list | awk '{print $2}'|awk -F '=' '{print $2}'| awk -F ":" '{print $1}'|sort|uniq
+10.117.0.115
+10.168.166.242
+127.0.0.1
+
+# kill连接
+
+for i in `redis-cli -p 6380 -a zyadmin client list | awk '{print$2}'|awk -F '=' '{print $2}'`
+do
+	redis-cli -p 6380 -a zyadmin client kill $i
+done
+=============================================================
+[root@ToBeRoot ~]# bash kill_redis_session.sh 
+client kill 127.0.0.1:49218
+client kill 127.0.0.1:49250
+OK
+(error) ERR No such client
+[root@ToBeRoot ~]# cat kill_redis_session.sh 
+> client_kill.redis
+for i in `redis-cli -p 6380 -a zyadmin client list | awk '{print$2}'|awk -F '=' '{print $2}'`
+do
+	echo "client kill $i" >> client_kill.redis
+done
+
+cat client_kill.redis
+redis-cli -p 6380 -a zyadmin < client_kill.redis

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	<title>Cloudcare Topo Test</title>
+
+    <script src="../js/json2.js" type="text/javascript"></script>
+    <script src="../js/jquery.js" type="text/javascript"></script>
+    <script src="../js/jtopo-0.4.8-min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/toolbar.js"></script>
+    <script id='code'>
+		$(document).ready(function(){
+
+            var canvas = document.getElementById('canvas');
+            var stage = new JTopo.Stage(canvas);
+            var scene = new JTopo.Scene(stage);
+            scene.background="./img/back/03.png";
+            scene.alpha = 1;
+
+            //显示工具栏
+            showJTopoToobar(stage);
+
+            function addNode(hostname,ip,type){
+                var node = new JTopo.Node(hostname);
+                node.setImage('./img/test/'+ type +'.png', true);
+                node.font="12px Consolas";
+                node.fontColor="#CCCC";
+                scene.add(node);
+
+                node.mouseover(function(){
+                    this.text = ip;
+                });
+                node.mouseout(function(){
+                    this.text = hostname;
+                });
+                return node;
+            }
+
+            function addLink(nodeA, nodeZ){
+                var link = new JTopo.FlexionalLink(nodeA, nodeZ);
+                link.strokeColor = '204,204,204';
+                link.lineWidth = 1;
+                scene.add(link);
+                return link;
+            }
+
+
+        var nodes = [{'ip': '106.1.2.1', 'hostname': 'slb01', 'type': 'SLB'}, {'ip': '106.1.2.2', 'hostname': 'slb02', 'type': 'SLB'}, {'ip': '192.168.1.5', 'hostname': 'app02', 'type': 'ECS'}, {'ip': '', 'hostname': 'client', 'type': 'internat'}, {'ip': '192.168.1.3', 'hostname': 'web03', 'type': 'ECS'}, {'ip': '192.168.1.2', 'hostname': 'web02', 'type': 'ECS'}, {'ip': '192.168.1.1', 'hostname': 'web01', 'type': 'ECS'}, {'ip': '192.168.2.2', 'hostname': 'db02', 'type': 'RDS'}, {'ip': '192.168.2.1', 'hostname': 'db01', 'type': 'RDS'}, {'ip': '192.168.1.4', 'hostname': 'app01', 'type': 'ECS'}];
+        var links = [{'source': 'client', 'destination': 'slb02'}, {'source': 'web03', 'destination': 'db01'}, {'source': 'slb01', 'destination': 'web02'}, {'source': 'web02', 'destination': 'db01'}, {'source': 'web01', 'destination': 'db01'}, {'source': 'app02', 'destination': 'db02'}, {'source': 'slb01', 'destination': 'web01'}, {'source': 'client', 'destination': 'slb01'}, {'source': 'slb02', 'destination': 'app02'}, {'source': 'slb01', 'destination': 'web03'}, {'source': 'app01', 'destination': 'db02'}, {'source': 'slb02', 'destination': 'app01'}];
+
+        // 画出节点并保存在ops对象中{'web01':节点对象,'web02':节点对象}
+        var ops = new Object();
+
+        for (var i=0;i<nodes.length;i++){
+            ops[nodes[i].hostname] = addNode(nodes[i].hostname,nodes[i].ip,nodes[i].type);
+        }
+
+        // 画出节点连线
+
+        for (var i=0;i<links.length;i++){
+            var s = links[i].source;
+            var d = links[i].destination;
+
+            var source = ops[s];
+            var destination = ops[d];
+            addLink(source,destination);
+        }
+
+        // 树形布局
+        scene.doLayout(JTopo.layout.TreeLayout('down', 100, 120));
+        });
+</script>
+
+</head>
+<body>
+
+
+
+	<center>
+	<div class="wrap_div">
+		<div class="head_nav">
+			<h2 class="logo"><a href="index.html" title="Cloudcare Topo">Cloudcare Topo</a></h2>
+		</div>
+		<div class="head_nav_second">
+			<ul class="menu" id="nav_menu">
+
+			</ul>
+		</div>
+		<div class="content">
+		  <div class="left">
+			<ul id="menu">
+
+			</ul>
+		  </div>
+		  <div class="right">
+				<div id="content">
+					<canvas id="canvas" width="1280" height="720"></canvas>
+
+				</div>
+		  </div>
+		  <div class="clear"></div>
+		</div>
+	</div>
+	</center>
+
+</body>
+</html>

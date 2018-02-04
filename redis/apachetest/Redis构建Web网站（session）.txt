@@ -1,0 +1,44 @@
+1. 搭建LAMP架构的ecshop购物网站
+
+yum install -y httpd mysql-server php php-mysql
+
+2. 安装php和redis的驱动程序并写入配置
+
+开始在 PHP 中使用 Redis 前， 我们需要确保已经安装了 redis 服务及 PHP redis 驱动，且你的机器上能正常使用 PHP。
+接下来让我们安装 PHP redis 驱动
+
+下载地址为:https://github.com/phpredis/phpredis/releases。
+
+PHP安装redis扩展
+
+以下操作需要在下载的 phpredis 目录中完成：
+
+$ wget https://github.com/phpredis/phpredis/archive/3.1.4.tar.gz
+$ cd phpredis-3.1.4                      # 进入 phpredis 目录
+$ /usr/local/php/bin/phpize              # php安装后的路径
+$ ./configure --with-php-config=/usr/local/php/bin/php-config
+$ make && make install
+
+修改php.ini文件
+
+[Session]
+; Handler used to store/retrieve data.
+; http://php.net/session.save-handler
+session.save_handler = redis
+session.save_path = "tcp://127.0.0.1:6379"
+
+[redis]
+extension = redis.so
+
+
+安装完成后重启php-fpm 或 apache。查看phpinfo信息，就能看到redis扩展。
+
+3. 修改应用代码使用redis存放session
+
+ini_set('session.save_handler','Redis');
+ini_set('session.save_path','tcp://localhost:6379');
+
+4. 测试
+
+参考文档：
+https://segmcentfault.com/q/1010000002419571

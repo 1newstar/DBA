@@ -1,0 +1,53 @@
+<?php
+	//将session保存到redis的两种方法
+	//第一种修改 php.ini 的设置
+	//ession.save_handler = redis
+	//session.save_path = "tcp://127.0.0.1:6379"
+	//第二种方法
+	ini_set('session.save_handler', 'redis');
+	ini_set('session.save_path', 'tcp://127.0.0.1:6380?auth=zyadmin');
+ 	
+	//调用会话函数，自动将记录会话信息记录到redis中
+	session_start();
+ 	
+	//连接redis服务器 
+	$redis = new redis();
+	$redis->connect('127.0.0.1', 6380);
+	$redis->auth('zyadmin'); 
+	// redis 用 session_id 作为 key 并且是以 string 的形式存储
+	echo $redis->get('PHPREDIS_SESSION:' . session_id());
+	echo '<br/>';
+	echo "====================================================";
+	echo '<br/>';
+
+   	echo "人气最高的五位用户为：\n"; 
+   	// Get the stored data and print it 
+   	$content = $redis->lrange("5name",0,4);
+   	if ($content == null)
+   	{
+       		$conn=mysql_connect("localhost", "root", "(Uploo00king)");
+        	$result=mysql_db_query("uplooking", "select name from gai order by  updatetime desc limit 5", $conn);
+       		// 获取查询结果
+       		for ($i=0; $i<5; $i++)
+       		{
+        	  	$row=mysql_fetch_row($result);
+          		echo $row[0];
+	  		$redis->rpush("5name",$row[0]);
+          		echo "\n";
+       		}
+       		$redis->expire("5name", 60); 
+       		// 释放资源
+       		mysql_free_result($result);
+       		// 关闭连接
+       		mysql_close($conn);
+
+   	}
+   	else
+   	{
+       		for ($i=0; $i<5; $i++)
+       		{
+	  	echo " " .$content[$i];
+          	echo "\n";
+       		}
+   	}
+?>

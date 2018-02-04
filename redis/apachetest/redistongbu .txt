@@ -1,0 +1,19 @@
+*************************** 3. row ***************************
+  sesskey: eb208e135d0e120e164e0102d589eb8a
+   expiry: 1510038550
+   userid: 0
+  adminid: 1
+       ip: 116.228.89.206
+user_name: 0
+user_rank: 0
+ discount: 0.00
+    email: 0
+     data: a:5:{s:12:"captcha_word";s:16:"NDU5MDBjNjc4ZQ==";s:10:"admin_name";s:6:"booboo";s:11:"action_list";s:3:"all";s:10:"last_check";i:1510038550;s:12:"suppliers_id";s:1:"0";}
+3 rows in set (0.00 sec)
+
+
+
+127.0.0.1:6380> get PHPREDIS_SESSION:trccliob4bnlubspv000ascj21
+"from_ad|i:0;referer|s:6:\"\xe6\x9c\xac\xe7\xab\x99\";login_fail|i:0;captcha_word|s:16:\"N2YxNTRiMTQxNQ==\";last_time|i:1510038539;last_ip|s:0:\"\";"
+127.0.0.1:6380> ttl PHPREDIS_SESSION:trccliob4bnlubspv000ascj21
+(integer) 1296

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas 学习</title>
+    <script src="../js/jquery.js" type="text/javascript"></script>
+    <script src="../js/jtopo-0.4.8-min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<canvas id="myCanvas" width="200" height="200" style="border:solid 1px #CCCC;">
+您的浏览器不支持canvas，建议使用最新版的Chrome
+</canvas>
+
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d"); //获取该canvas的2D绘图环境对象
+ctx.moveTo(0,0);   //咱把“画笔”移到坐标(0,0)
+ctx.lineTo(150,50);  //从上个点(0,0)画一条直线，结束点坐标是(150,50)
+ctx.lineTo(20,100);  //从上个点(150,50)继续画一条直线，结束点坐标是(20,100)
+ctx.strokeStyle = "blue";    //设定描边颜色为蓝色
+ctx.stroke();  //描边
+
+ctx.beginPath();  //告诉canvas咱们要重新绘制一条全新的路径了，之前画的东西从此再无关系
+ctx.moveTo(90,90);   //咱把“画笔”移到坐标(90,90)
+ctx.lineTo(80,150);  //从上个点(60,60)继续画一条直线，结束点坐标是(80,150)
+ctx.strokeStyle = "red";    //设定描边颜色为红色，只要写在.stroke()方法前面即可
+ctx.stroke();  //描边
+
+
+ctx.beginPath();  //告诉canvas咱们要重新绘制一条全新的路径了，之前画的东西从此再无关系
+ctx.moveTo(0,0);
+ctx.lineTo(160,60);
+ctx.lineTo(30,110);
+
+var grd = ctx.createLinearGradient(0,0,170,0);  //定义线性渐变对象，设定渐变线起始点和结束点坐标，坐标格式为(起始点x,起始点y,结束点x,结束点y)
+grd.addColorStop(0,"black");   //定义渐变线起点颜色
+grd.addColorStop(0.5,"red");   //定义渐变线中间点的颜色
+grd.addColorStop(1,"yellow");  //定义渐变线结束点的颜色
+
+ctx.strokeStyle = grd;   //将渐变对象赋值给strokeStyle
+ctx.stroke();  //描边
+
+</script>
+</body>
+</html>

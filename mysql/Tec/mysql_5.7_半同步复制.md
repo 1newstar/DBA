@@ -1,0 +1,1 @@
+**MySQL 5.7.17前，并发连接数（并发打开文件数）高于1024时，semi-sync replication可能会异常，请至少升级到5.7.17及更高版本。bug id: 79865关键信息: When starting semisynchronous replication, if more than 1024 file descriptors existed, the semisynchronous socket was not created correctly. This prevented semisynchronous replication from functioning correctly**

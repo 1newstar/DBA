@@ -1,0 +1,98 @@
+vmstat 1 5 													
+iostat -dkx 1 5												
+netstat -nat | awk '{print $6}'| sort | uniq -c				
+netstat -na | grep ESTABLISHED|awk '{print $5}' | awk -F: '{print $1}' | sort|uniq -c	
+ps -aux 2> /dev/null | sort -k3nr | head -n 5 | awk 'BEGIN{print "%CPU\tPID\tCOMMAD"}{print $4,'\t',$2,'\t',$11}' 
+ps -aux 2> /dev/null | sort -k4nr | head -n 5 | awk 'BEGIN{print "%MEM\tPID\tCOMMAD"}{print $4,'\t',$2,'\t',$11}' 
+
+
+
+
+select version();
+show global status like 'Uptime';
+show global status like 'Questions';
+show global status like 'Threads_connected';
+
+
+
+select table_schema,round(sum(data_length/1024/1024),2) as data_length_MB,
+round(sum(index_length/1024/1024),2) as index_length_MB 
+from information_schema.tables  
+group by table_schema order by data_length_MB desc,index_length_MB desc;
+
+
+select table_schema,table_name, TABLE_ROWS,
+round(data_length/1024/1024,2) as data_length_MB,
+round(index_length/1024/1024,2) as index_length_MB 
+from information_schema.tables 
+order by data_length_MB desc,index_length_MB desc 
+limit 10;
+
+select count(table_name) table_count from information_schema.tables
+WHERE table_type = 'BASE TABLE';
+
+
+SELECT table_type ,engine,COUNT(TABLE_NAME) AS num_tables
+FROM INFORMATION_SCHEMA.TABLES
+group by TABLE_TYPE,engine order by num_tables desc;
+
+
+SELECT
+ROUND(((data_size + index_size) / gb),4) AS total_size_gb,
+ROUND((index_size / gb),4) AS index_size_gb,
+ROUND((data_size / gb),4) AS data_size_gb,
+ROUND((index_size / (data_size + index_size)),2) * 100 AS perc_index,
+ROUND((data_size / (data_size + index_size)),2) * 100 AS perc_data
+FROM (
+SELECT
+SUM(data_length) data_size,
+SUM(index_length) index_size,
+SUM(if(engine = 'innodb', data_length, 0)) AS innodb_data_size,
+SUM(if(engine = 'innodb', index_length, 0)) AS innodb_index_size,
+SUM(if(engine = 'myisam', data_length, 0)) AS myisam_data_size,
+SUM(if(engine = 'myisam', index_length, 0)) AS myisam_index_size,
+POW(1024, 3) gb
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE') a;
+
+
+SELECT
+ROUND((SUM(innodb_index_size + innodb_data_size) / gb),4) AS innodb_total_size_gb,
+ROUND((innodb_data_size / gb),4) AS innodb_data_size_gb,
+ROUND((innodb_index_size / gb),4) AS innodb_index_size_gb,
+ROUND(innodb_index_size / (innodb_data_size + innodb_index_size),2) * 100 AS innodb_perc_index,
+ROUND(innodb_data_size / (innodb_data_size + innodb_index_size),2) * 100 AS innodb_perc_data,
+ROUND(innodb_index_size / index_size,2) * 100 AS innodb_perc_total_index,
+ROUND(innodb_data_size / data_size,2) * 100 AS innodb_perc_total_data
+FROM (
+SELECT
+SUM(data_length) data_size,
+SUM(index_length) index_size,
+SUM(if(engine = 'innodb', data_length, 0)) AS innodb_data_size,
+SUM(if(engine = 'innodb', index_length, 0)) AS innodb_index_size,
+SUM(if(engine = 'myisam', data_length, 0)) AS myisam_data_size,
+SUM(if(engine = 'myisam', index_length, 0)) AS myisam_index_size,
+POW(1024, 3) gb
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE') a;
+
+
+SELECT
+ROUND((SUM(myisam_index_size + myisam_data_size) / gb),4) AS myisam_total_size_gb,
+ROUND((myisam_data_size / gb),4) AS myisam_data_size_gb,
+ROUND((myisam_index_size / gb),4) AS myisam_index_size_gb,
+ROUND(myisam_index_size / (myisam_data_size + myisam_index_size),2) * 100 AS myisam_perc_index,
+ROUND(myisam_data_size / (myisam_data_size + myisam_index_size),2) * 100 AS myisam_perc_data,
+ROUND(myisam_index_size / index_size,2) * 100 AS myisam_perc_total_index,
+ROUND(myisam_data_size / data_size,2) * 100 AS myisam_perc_total_data
+FROM (
+SELECT
+SUM(data_length) data_size,
+SUM(index_length) index_size,
+SUM(if(engine = 'innodb', data_length, 0)) AS innodb_data_size,
+SUM(if(engine = 'innodb', index_length, 0)) AS innodb_index_size,
+SUM(if(engine = 'myisam', data_length, 0)) AS myisam_data_size,
+SUM(if(engine = 'myisam', index_length, 0)) AS myisam_index_size,
+POW(1024, 3) gb
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE') a;

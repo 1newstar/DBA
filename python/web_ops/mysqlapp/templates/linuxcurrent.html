@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Linux实时系统资源使用情况</title>
+</head>
+
+<body>
+<h1>Linux实时系统资源使用情况报告</h1>
+<p><i>驻云DBA组</i></p>
+<h4>检测时间：
+
+<script language=Javascript>
+var now=new Date()
+document.write(1900+now.getYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds())
+</script>
+
+</h4>
+<h4>检测对象：{{ hostname }}</h4>
+
+<p>1. 系统的进程状态、内存使用、虚拟内存使用、磁盘的IO、中断、上下文切换、CPU使用等</p>
+<pre>{{ a.a }}</pre>
+
+<p>2. 系统磁盘的IO性能情况</p>
+<pre>{{ a.b }}</pre>
+
+<p>3. 当前所有的连接数情况</p>
+<pre>{{ a.c }}</pre>
+
+<p>4. 连接最多的ip地址</p>
+<pre>{{ a.d }}</pre>
+
+<p>5. 占用CPU最大的5个进程</p>
+<pre>{{ a.e }}</pre>
+
+<p>6. 占用内存最多的5个进程</p>
+<pre>{{ a.f }}</pre>
+
+<pre>The END</pre>
+
+</body>
+
+
+
+</html>

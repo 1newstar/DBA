@@ -1,0 +1,17 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Linux OS INFO</title>
+</head>
+<body>
+  <form action="/mysqlcheck" method="post">
+    <legend>请输入待检测服务器数据库登陆信息:</legend>
+    <p><input name="dbhostname" placeholder="dbHostname" value="{{ dbhostname }}"></p>
+    <p><input name="dbport" placeholder="dbPort" value="{{ dbport }}"></p>
+    <p><input name="dbusername" placeholder="dbUsername" value="{{ dbusername }}"></p>
+    <p><input name="dbpassword" placeholder="dbPassword" value="{{ dbpassword }}"></p>
+    <p><input name="dbname" placeholder="dbName" value="{{ dbname }}"></p>
+    <p><button type="submit">COMMIT</button></p>
+  </form>
+</body>
+</html>

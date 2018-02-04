@@ -1,0 +1,35 @@
+CREATE TABLE t1(   
+id int primary key auto_increment,    
+uname  varchar(20) ,   
+ucreatetime  datetime  ,   
+age  int(11)) DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci;
+
+delimiter $$
+
+create  procedure test1()  
+begin
+
+declare v_cnt decimal (10)  default 0 ;
+start transaction;
+dd:loop            
+        insert  into t1 values         
+        (null,'用户1',sysdate(),20),         
+        (null,'用户2',sysdate(),20),         
+        (null,'用户3',sysdate(),20),         
+        (null,'用户4',sysdate(),20),         
+        (null,'用户5',sysdate(),20),         
+        (null,'用户6',sysdate(),20),         
+        (null,'用户7',sysdate(),20),         
+        (null,'用户8',sysdate(),20),         
+        (null,'用户9',sysdate(),20),         
+        (null,'用户0',sysdate(),20)             
+                ;                                        
+        set v_cnt = v_cnt+10 ;                            
+            if  v_cnt = 100000 then leave dd;                           
+            end if;          
+        end loop dd ; 
+commit;
+end $$
+
+delimiter ;
+call test1();

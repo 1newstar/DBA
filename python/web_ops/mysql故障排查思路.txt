@@ -1,0 +1,297 @@
+﻿检查系统资源使用情况
+
+	硬件规格信息:cpu mem disk
+	
+		lscpu #报告CPU规格
+		free  #报告内存规格	
+		df -h #报告磁盘规格
+		
+	历史系统资源使用情况
+	
+	    sar -u #报告CPU的利用率
+        sar -q #报告CPU运行队列和交换队列的平均长度
+        sar -r #报告内存没有使用的内存页面和硬盘块
+        sar -b #报告IOPS的使用情况
+        sar -d #报告磁盘的使用情况
+		
+	实时系统资源使用情况
+        vmstat 1 5 													#观察系统的进程状态、内存使用、虚拟内存使用、磁盘的IO、中断、上下文切换、CPU使用等
+		iostat -dkx 1 5												#监控系统磁盘的IO性能情况
+		netstat -nat | awk '{print $6}'| sort | uniq -c				#统计当前所有的连接数情况
+        netstat -na | grep ESTABLISHED|awk '{print $5}' | awk -F: '{print $1}' | sort|uniq -c	#查出哪个ip地址连接最多
+        ps -aux 2> /dev/null | sort -k3nr | head -n 5 | awk 'BEGIN{print "%CPU\tPID\tCOMMAD"}{print $3,'\t',$2,'\t',$11}' #查看占用CPU最大的5个进程
+        ps -aux 2> /dev/null | sort -k4nr | head -n 5 | awk 'BEGIN{print "%MEM\tPID\tCOMMAD"}{print $4,'\t',$2,'\t',$11}' #查看占用内存最多的5个进程
+
+检查数据库中库表情况
+		status_report				#数据库基本信息
+									select version();
+									show global status like 'Uptime';
+									show global status like 'Questions';
+									show global status like 'Threads_connected';
+									avg_qps = Questions/Uptime
+									
+		database_data_report		#数据库库的数据量和索引量统计
+									select table_schema,round(sum(data_length/1024/1024),2) as data_length_MB,
+									round(sum(index_length/1024/1024),2) as index_length_MB 
+									from information_schema.tables  
+									group by table_schema order by data_length_MB desc,index_length_MB desc;
+									
+		table_data_report			#表的数据量和索引量，行数统计前十
+									select table_schema,table_name, TABLE_ROWS,
+									round(data_length/1024/1024,2) as data_length_MB,
+									round(index_length/1024/1024,2) as index_length_MB 
+									from information_schema.tables 
+									order by data_length_MB desc,index_length_MB desc 
+									limit 10;
+		
+        table_and_engine_report		#表数据量统计以及不同存储引擎表的数量统计
+									SELECT table_type ,engine,COUNT(TABLE_NAME) AS num_tables
+									FROM INFORMATION_SCHEMA.TABLES
+									group by TABLE_TYPE,engine order by num_tables desc;
+		
+        summary_size_report			#数据和索引量统计和占比
+									SELECT
+									ROUND(((data_size + index_size) / gb),4) AS total_size_gb,
+									ROUND((index_size / gb),4) AS index_size_gb,
+									ROUND((data_size / gb),4) AS data_size_gb,
+									ROUND((index_size / (data_size + index_size)),2) * 100 AS perc_index,
+									ROUND((data_size / (data_size + index_size)),2) * 100 AS perc_data
+									FROM (
+									SELECT
+									SUM(data_length) data_size,
+									SUM(index_length) index_size,
+									SUM(if(engine = 'innodb', data_length, 0)) AS innodb_data_size,
+									SUM(if(engine = 'innodb', index_length, 0)) AS innodb_index_size,
+									SUM(if(engine = 'myisam', data_length, 0)) AS myisam_data_size,
+									SUM(if(engine = 'myisam', index_length, 0)) AS myisam_index_size,
+									POW(1024, 3) gb
+									FROM information_schema.tables
+									WHERE table_type = 'BASE TABLE') a;
+	
+        innodb_engine_report		#innodb存储引擎情况
+									SELECT
+									ROUND((SUM(innodb_index_size + innodb_data_size) / gb),4) AS innodb_total_size_gb,
+									ROUND((innodb_data_size / gb),4) AS innodb_data_size_gb,
+									ROUND((innodb_index_size / gb),4) AS innodb_index_size_gb,
+									ROUND(innodb_index_size / (innodb_data_size + innodb_index_size),2) * 100 AS innodb_perc_index,
+									ROUND(innodb_data_size / (innodb_data_size + innodb_index_size),2) * 100 AS innodb_perc_data,
+									ROUND(innodb_index_size / index_size,2) * 100 AS innodb_perc_total_index,
+									ROUND(innodb_data_size / data_size,2) * 100 AS innodb_perc_total_data
+									FROM (
+									SELECT
+									SUM(data_length) data_size,
+									SUM(index_length) index_size,
+									SUM(if(engine = 'innodb', data_length, 0)) AS innodb_data_size,
+									SUM(if(engine = 'innodb', index_length, 0)) AS innodb_index_size,
+									SUM(if(engine = 'myisam', data_length, 0)) AS myisam_data_size,
+									SUM(if(engine = 'myisam', index_length, 0)) AS myisam_index_size,
+									POW(1024, 3) gb
+									FROM information_schema.tables
+									WHERE table_type = 'BASE TABLE') a;
+		
+        myiasm_engine_report		#myisam存储引擎情况
+									SELECT
+									ROUND((SUM(myisam_index_size + myisam_data_size) / gb),4) AS myisam_total_size_gb,
+									ROUND((myisam_data_size / gb),4) AS myisam_data_size_gb,
+									ROUND((myisam_index_size / gb),4) AS myisam_index_size_gb,
+									ROUND(myisam_index_size / (myisam_data_size + myisam_index_size),2) * 100 AS myisam_perc_index,
+									ROUND(myisam_data_size / (myisam_data_size + myisam_index_size),2) * 100 AS myisam_perc_data,
+									ROUND(myisam_index_size / index_size,2) * 100 AS myisam_perc_total_index,
+									ROUND(myisam_data_size / data_size,2) * 100 AS myisam_perc_total_data
+									FROM (
+									SELECT
+									SUM(data_length) data_size,
+									SUM(index_length) index_size,
+									SUM(if(engine = 'innodb', data_length, 0)) AS innodb_data_size,
+									SUM(if(engine = 'innodb', index_length, 0)) AS innodb_index_size,
+									SUM(if(engine = 'myisam', data_length, 0)) AS myisam_data_size,
+									SUM(if(engine = 'myisam', index_length, 0)) AS myisam_index_size,
+									POW(1024, 3) gb
+									FROM information_schema.tables
+									WHERE table_type = 'BASE TABLE') a;
+
+检查数据库状态
+	check_dead_lock 				#检查死锁情况
+									show engine innodb status;
+
+	check_innodb_lock 				#检查innodb行锁等待
+									##获取到innodb事务锁冲突的原始id
+									select id 
+									from 
+									information_schema.processlist,
+									information_schema.innodb_trx  
+									where trx_mysql_thread_id=id 
+									and trx_id in 
+									(
+										select blocking_trx_id 
+										from (
+											select blocking_trx_id, count(blocking_trx_id) as countnum 
+											from 
+												(
+												select a.trx_id,a.trx_state,b.requesting_trx_id,b.blocking_trx_id 
+												from information_schema.innodb_lock_waits as  b 
+												left join information_schema.innodb_trx as a 
+												on a.trx_id=b.requesting_trx_id
+												) as t1 
+											group by blocking_trx_id 
+											order by  countnum desc limit 1
+											) c
+									) ;
+	
+
+	check_ratio_aborterd_connections	#检查失败连接的比率
+										(Aborted_connects / Connections) * 100) > 0.1 不正常
+																		
+	check_ratio_max_connections			#检查最大连接数占比
+										(Max_used_connections * 100) / max_connections) > 0.85 不正常
+	
+	check_slowlog 					#检查慢查询情况
+									## variables
+									long_query_time     				#设定慢查询的阀值，超出次设定值的SQL即被记录到慢查询日志，缺省值为10s  
+									slow_query_log      				#指定是否开启慢查询日志  
+									slow_query_log_file					#指定慢日志文件存放位置，可以为空，系统会给一个缺省的文件host_name-slow.log  
+									min_examined_row_limit				#查询检查返回少于该参数指定行的SQL不被记录到慢查询日志  
+									log_queries_not_using_indexes		#不使用索引的慢查询日志是否记录到索引
+									## status	
+									slow_queries						#记录的慢查询数量
+									Questions							#所有的查询
+									## 计算
+									slow_queries / Questions			#慢查询占比
+									https://dev.mysql.com/doc/refman/5.7/en/optimization.html
+	
+	
+	check_binlog 					#检查binlog情况
+									log_bin								#检查binlog是否开启
+									binlog_format 						#检查binlog格式是否为row
+									sync_binlog							#检查binlog刷盘配置
+									expire_logs_days					#检查binlog是否开启自动清除过期日志
+			
+	check_innodb 					#检查innodb情况
+									innodb_flush_log_at_trx_commit		#检查redolog刷盘配置
+									innodb_doublewrite					#innodb双写是否开启
+									tx_isolation						#innodb事务隔离级别
+									innodb_lock_wait_timeout			#innodb行锁等待超时时间
+
+	check_table_scans 				#检查临时表使用情况
+									## variables
+									max_heap_table_size 				#超过该阈值则用到硬盘临时表
+									tmp_table_size						#实际起限制作用的是tmp_table_size和max_heap_table_size的最小值
+																		
+									## status
+									Created_tmp_disk_tables				#如果是在磁盘上创建临时表，Created_tmp_tables增加，Created_tmp_disk_tables也增加
+									Created_tmp_files					#MySQL服务创建的临时文件文件数
+									Created_tmp_tables					#每次创建临时表，Created_tmp_tables增加
+																		#比较理想的配置是：Created_tmp_disk_tables / Created_tmp_tables * 100% <= 25%
+																		
+		
+	check_open_table 				#检查open table的情况
+									## variables
+									table_open_cache					#表高速缓存的大小。每当MySQL访问一个表时，如果在表缓冲区中还有空间，该表就被打开并放入其中，这样可以更快地访问表内容。
+									
+									## status
+									Open_tables							#表示打开表的数量
+									Opened_tables						#表示打开过的表数量	
+			
+									## check
+									Open_tables / Opened_tables >= 0.85
+									Open_tables / table_open_cache <= 0.95
+																		 
+	check_threads 					#检查进程使用情况
+									## variables
+									thread_cache_size					#缓存的线程数
+									## status
+									Threads_created						#已创建的线程数量
+									Threads_cached						#已缓存线程的大小
+									Uptime								#服务器已运行时长
+									## check
+									historic_threads_per_sec = threads_created1 / uptime  超负荷运行
+									current_threads_per_sec = threads_created2 - threads_created1
+									(historic_threads_per_sec >=2 or current_threads_per_sec >=2 )and Threads_cached <= 1: Threads created per/sec are overrunning threads cached,You should raise thread_cache_size
+									Your thread_cache_size is fine
+									## info
+									8 + (max_connections / 100)
+	
+		
+
+	check_query_cache_type			#检查查询缓存是否关闭
+									## variables
+									query_cache_type					#查询缓存开闭控制参数
+																		
+	check_sort_buffer_size			#检查排序缓存使用情况									
+									## variables
+									sort_buffer_size					#分配给排序使用的内存大小（顺序扫描）
+									read_rnd_buffer_size 				#随机的顺序缓冲
+									
+									## status
+									Sort_merge_passes					#由于sort buffer不够大，不得不将需要排序的数据进行分段，然后再通过sort merge的算法完成整个过程的merge总次数
+									Sort_scan							#通过扫描表完成的排序总次数
+									Sort_range							#通过扫描范围完成的排序总次数
+									
+									## check
+									total_sorts = Sort_scan + Sort_range
+									passes_per_sort = Sort_merge_passes / total_sorts
+									passes_per_sort >= 2  :
+									"On average $passes_per_sort sort merge passes are made per sort operation. You should raise your sort_buffer_size, You should also raise your read_rnd_buffer_size"
+									"Sort buffer seems to be fine"	
+    
+	check_join_buffer_size			#检查join缓存使用情况
+									## variables 
+									join_buffer_size
+									join_buffer_size = join_buffer_size + 4096
+									## Status
+									select_full_join
+									select_range_check
+									
+									"You have had $select_full_join queries where a join could not use an index properly"
+
+									if select_range_check = 0  && select_full_join = 0 :
+										"Your joins seem to be using indexes properly"
+	
+									if select_full_join > 0 :
+									
+										"You should enable log-queries-not-using-indexes. Then look for non indexed joins in the slow query log."
+										"If you are unable to optimize your queries you may want to increase your join_buffer_size to accommodate larger joins in one pass."
+
+									if select_range_check > 0 :
+										"You have had {0} without keys that check for key usage after each row".format(select_range_check joins)
+										"You should enable log-queries-not-using-indexes. Then look for non indexed joins in the slow query log."
+										"If you are unable to optimize your queries you may want to increase your join_buffer_size to accommodate larger joins in one pass."
+
+									if join_buffer_size > 4194304 :
+										"join_buffer_size >= 4 M"
+										"This is not advised"
+		
+
+ 				
+	check_open_files_limit 				#检查打开的文件数情况	
+										##variables
+										open_files_limit
+										##status
+										open_files
+										##check
+										open_files_ratio = open_files * 100 /open_files_limit
+
+										if open_files_ratio >= 75:
+											"You currently have open more than 75% of your open_files_limit, You should set a higher value for open_files_limit in my.cnf" boldred
+										else:
+											"Your open_files_limit value seems to be fine"
+
+
+1.介绍文档的意义
+2.规格配置
+3.系统状态
+4.问题与建议
+5.慢查询		
+6 性能曲线
+	cpu利用率
+	内存利用率
+	磁盘空间
+	IOPS
+	会话
+	QPSTPS
+	Innodb
+		
+
+
+ 
+

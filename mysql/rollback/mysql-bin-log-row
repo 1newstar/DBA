@@ -1,0 +1,313 @@
+[root@rhel7 ~]# yum install mariadb-server -y
+Loaded plugins: langpacks, product-id, subscription-manager
+This system is not registered to Red Hat Subscription Management. You can use subscription-manager to register.
+Resolving Dependencies
+--> Running transaction check
+---> Package mariadb-server.x86_64 1:5.5.35-3.el7 will be installed
+--> Processing Dependency: mariadb(x86-64) = 1:5.5.35-3.el7 for package: 1:mariadb-server-5.5.35-3.el7.x86_64
+--> Processing Dependency: perl(DBI) for package: 1:mariadb-server-5.5.35-3.el7.x86_64
+--> Processing Dependency: perl(Data::Dumper) for package: 1:mariadb-server-5.5.35-3.el7.x86_64
+--> Processing Dependency: perl-DBD-MySQL for package: 1:mariadb-server-5.5.35-3.el7.x86_64
+--> Processing Dependency: perl-DBI for package: 1:mariadb-server-5.5.35-3.el7.x86_64
+--> Running transaction check
+---> Package mariadb.x86_64 1:5.5.35-3.el7 will be installed
+---> Package perl-DBD-MySQL.x86_64 0:4.023-5.el7 will be installed
+---> Package perl-DBI.x86_64 0:1.627-4.el7 will be installed
+--> Processing Dependency: perl(RPC::PlClient) >= 0.2000 for package: perl-DBI-1.627-4.el7.x86_64
+--> Processing Dependency: perl(RPC::PlServer) >= 0.2001 for package: perl-DBI-1.627-4.el7.x86_64
+---> Package perl-Data-Dumper.x86_64 0:2.145-3.el7 will be installed
+--> Running transaction check
+---> Package perl-PlRPC.noarch 0:0.2020-14.el7 will be installed
+--> Processing Dependency: perl(Net::Daemon) >= 0.13 for package: perl-PlRPC-0.2020-14.el7.noarch
+--> Processing Dependency: perl(Compress::Zlib) for package: perl-PlRPC-0.2020-14.el7.noarch
+--> Processing Dependency: perl(Net::Daemon::Log) for package: perl-PlRPC-0.2020-14.el7.noarch
+--> Processing Dependency: perl(Net::Daemon::Test) for package: perl-PlRPC-0.2020-14.el7.noarch
+--> Running transaction check
+---> Package perl-IO-Compress.noarch 0:2.061-2.el7 will be installed
+--> Processing Dependency: perl(Compress::Raw::Bzip2) >= 2.061 for package: perl-IO-Compress-2.061-2.el7.noarch
+--> Processing Dependency: perl(Compress::Raw::Zlib) >= 2.061 for package: perl-IO-Compress-2.061-2.el7.noarch
+---> Package perl-Net-Daemon.noarch 0:0.48-5.el7 will be installed
+--> Running transaction check
+---> Package perl-Compress-Raw-Bzip2.x86_64 0:2.061-3.el7 will be installed
+---> Package perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==============================================================================================================================================================
+ Package                                         Arch                           Version                                  Repository                      Size
+==============================================================================================================================================================
+Installing:
+ mariadb-server                                  x86_64                         1:5.5.35-3.el7                           server                          11 M
+Installing for dependencies:
+ mariadb                                         x86_64                         1:5.5.35-3.el7                           server                         8.9 M
+ perl-Compress-Raw-Bzip2                         x86_64                         2.061-3.el7                              server                          32 k
+ perl-Compress-Raw-Zlib                          x86_64                         1:2.061-4.el7                            server                          57 k
+ perl-DBD-MySQL                                  x86_64                         4.023-5.el7                              server                         140 k
+ perl-DBI                                        x86_64                         1.627-4.el7                              server                         802 k
+ perl-Data-Dumper                                x86_64                         2.145-3.el7                              server                          47 k
+ perl-IO-Compress                                noarch                         2.061-2.el7                              server                         260 k
+ perl-Net-Daemon                                 noarch                         0.48-5.el7                               server                          51 k
+ perl-PlRPC                                      noarch                         0.2020-14.el7                            server                          36 k
+
+Transaction Summary
+==============================================================================================================================================================
+Install  1 Package (+9 Dependent packages)
+
+Total download size: 21 M
+Installed size: 107 M
+Downloading packages:
+(1/10): mariadb-5.5.35-3.el7.x86_64.rpm                                                                                                | 8.9 MB  00:00:01     
+(2/10): perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64.rpm                                                                                 |  32 kB  00:00:00     
+(3/10): perl-Compress-Raw-Zlib-2.061-4.el7.x86_64.rpm                                                                                  |  57 kB  00:00:00     
+(4/10): perl-DBD-MySQL-4.023-5.el7.x86_64.rpm                                                                                          | 140 kB  00:00:00     
+(5/10): mariadb-server-5.5.35-3.el7.x86_64.rpm                                                                                         |  11 MB  00:00:01     
+(6/10): perl-DBI-1.627-4.el7.x86_64.rpm                                                                                                | 802 kB  00:00:00     
+(7/10): perl-Data-Dumper-2.145-3.el7.x86_64.rpm                                                                                        |  47 kB  00:00:00     
+(8/10): perl-IO-Compress-2.061-2.el7.noarch.rpm                                                                                        | 260 kB  00:00:00     
+(9/10): perl-Net-Daemon-0.48-5.el7.noarch.rpm                                                                                          |  51 kB  00:00:00     
+(10/10): perl-PlRPC-0.2020-14.el7.noarch.rpm                                                                                           |  36 kB  00:00:00     
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                          13 MB/s |  21 MB  00:00:01     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : perl-Data-Dumper-2.145-3.el7.x86_64                                                                                                       1/10 
+  Installing : 1:mariadb-5.5.35-3.el7.x86_64                                                                                                             2/10 
+  Installing : 1:perl-Compress-Raw-Zlib-2.061-4.el7.x86_64                                                                                               3/10 
+  Installing : perl-Net-Daemon-0.48-5.el7.noarch                                                                                                         4/10 
+  Installing : perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64                                                                                                5/10 
+  Installing : perl-IO-Compress-2.061-2.el7.noarch                                                                                                       6/10 
+  Installing : perl-PlRPC-0.2020-14.el7.noarch                                                                                                           7/10 
+  Installing : perl-DBI-1.627-4.el7.x86_64                                                                                                               8/10 
+  Installing : perl-DBD-MySQL-4.023-5.el7.x86_64                                                                                                         9/10 
+  Installing : 1:mariadb-server-5.5.35-3.el7.x86_64                                                                                                     10/10 
+  Verifying  : perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64                                                                                                1/10 
+  Verifying  : perl-Net-Daemon-0.48-5.el7.noarch                                                                                                         2/10 
+  Verifying  : perl-Data-Dumper-2.145-3.el7.x86_64                                                                                                       3/10 
+  Verifying  : perl-PlRPC-0.2020-14.el7.noarch                                                                                                           4/10 
+  Verifying  : 1:perl-Compress-Raw-Zlib-2.061-4.el7.x86_64                                                                                               5/10 
+  Verifying  : 1:mariadb-server-5.5.35-3.el7.x86_64                                                                                                      6/10 
+  Verifying  : perl-DBI-1.627-4.el7.x86_64                                                                                                               7/10 
+  Verifying  : 1:mariadb-5.5.35-3.el7.x86_64                                                                                                             8/10 
+  Verifying  : perl-DBD-MySQL-4.023-5.el7.x86_64                                                                                                         9/10 
+  Verifying  : perl-IO-Compress-2.061-2.el7.noarch                                                                                                      10/10 
+
+Installed:
+  mariadb-server.x86_64 1:5.5.35-3.el7                                                                                                                        
+
+Dependency Installed:
+  mariadb.x86_64 1:5.5.35-3.el7                   perl-Compress-Raw-Bzip2.x86_64 0:2.061-3.el7           perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7          
+  perl-DBD-MySQL.x86_64 0:4.023-5.el7             perl-DBI.x86_64 0:1.627-4.el7                          perl-Data-Dumper.x86_64 0:2.145-3.el7                
+  perl-IO-Compress.noarch 0:2.061-2.el7           perl-Net-Daemon.noarch 0:0.48-5.el7                    perl-PlRPC.noarch 0:0.2020-14.el7                    
+
+Complete!
+[root@rhel7 ~]# vi /etc/my.cnf
+[root@rhel7 ~]# systemctl  start mariadb
+Job for mariadb.service failed. See 'systemctl status mariadb.service' and 'journalctl -xn' for details.
+[root@rhel7 ~]# vi /etc/my.cnf
+[root@rhel7 ~]# systemctl  start mariadb
+Job for mariadb.service failed. See 'systemctl status mariadb.service' and 'journalctl -xn' for details.
+[root@rhel7 ~]# vi /etc/my.cnf
+[root@rhel7 ~]# man my.cnf
+No manual entry for my.cnf
+[root@rhel7 ~]# vi /etc/my.cnf
+[root@rhel7 ~]# systemctl  start mariadb
+[root@rhel7 ~]# mysql
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 2
+Server version: 5.5.35-MariaDB-log MariaDB Server
+
+Copyright (c) 2000, 2013, Oracle, Monty Program Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database db1;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> use db1;
+Database changed
+MariaDB [db1]> create table t1 (id int , name varchar(10) );
+Query OK, 0 rows affected (0.81 sec)
+
+MariaDB [db1]> insert into t1 (1,'a'),(2,'b'),(3,'c');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '1,'a'),(2,'b'),(3,'c')' at line 1
+MariaDB [db1]> insert into t1 values  (1,'a'),(2,'b'),(3,'c');
+Query OK, 3 rows affected (0.11 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db1]> select * from t1;
++------+------+
+| id   | name |
++------+------+
+|    1 | a    |
+|    2 | b    |
+|    3 | c    |
++------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [db1]> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db1]> delete from t1;
+Query OK, 3 rows affected (0.00 sec)
+
+MariaDB [db1]> select * from t1;
+Empty set (0.00 sec)
+
+MariaDB [db1]> rollback;
+Query OK, 0 rows affected (0.02 sec)
+
+MariaDB [db1]> select * from t1;
++------+------+
+| id   | name |
++------+------+
+|    1 | a    |
+|    2 | b    |
+|    3 | c    |
++------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [db1]> delete from t1;
+Query OK, 3 rows affected (0.03 sec)
+
+MariaDB [db1]> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db1]> select * from t1;
+Empty set (0.00 sec)
+
+MariaDB [db1]> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db1]> select * from t1;
+Empty set (0.00 sec)
+
+MariaDB [db1]> Bye
+[root@rhel7 ~]# cd /var/lib/mysql/
+[root@rhel7 mysql]# ls
+aria_log.00000001  db1      ib_logfile0  mysql       performance_schema  rhel7.000002  rhel7.index
+aria_log_control   ibdata1  ib_logfile1  mysql.sock  rhel7.000001        rhel7.000003  test
+[root@rhel7 mysql]# mysqlbinlog -v -v rhel7.000003
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;
+/*!40019 SET @@session.max_insert_delayed_threads=0*/;
+/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
+DELIMITER /*!*/;
+# at 4
+#160614  4:05:45 server id 1  end_log_pos 245 	Start: binlog v 4, server v 5.5.35-MariaDB-log created 160614  4:05:45 at startup
+# Warning: this binlog is either in use or was not closed properly.
+ROLLBACK/*!*/;
+BINLOG '
+2bpfVw8BAAAA8QAAAPUAAAABAAQANS41LjM1LU1hcmlhREItbG9nAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAADZul9XEzgNAAgAEgAEBAQEEgAA2QAEGggAAAAICAgCAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAA0OQBAQ==
+'/*!*/;
+# at 245
+#160614  4:06:11 server id 1  end_log_pos 326 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1465891571/*!*/;
+SET @@session.pseudo_thread_id=2/*!*/;
+SET @@session.foreign_key_checks=1, @@session.sql_auto_is_null=0, @@session.unique_checks=1, @@session.autocommit=1/*!*/;
+SET @@session.sql_mode=0/*!*/;
+SET @@session.auto_increment_increment=1, @@session.auto_increment_offset=1/*!*/;
+/*!\C utf8 *//*!*/;
+SET @@session.character_set_client=33,@@session.collation_connection=33,@@session.collation_server=8/*!*/;
+SET @@session.lc_time_names=0/*!*/;
+SET @@session.collation_database=DEFAULT/*!*/;
+create database db1
+/*!*/;
+# at 326
+#160614  4:06:35 server id 1  end_log_pos 432 	Query	thread_id=2	exec_time=1	error_code=0
+use `db1`/*!*/;
+SET TIMESTAMP=1465891595/*!*/;
+create table t1 (id int , name varchar(10) )
+/*!*/;
+# at 432
+#160614  4:07:14 server id 1  end_log_pos 499 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1465891634/*!*/;
+BEGIN
+/*!*/;
+# at 499
+# at 542
+#160614  4:07:14 server id 1  end_log_pos 542 	Table_map: `db1`.`t1` mapped to number 33
+#160614  4:07:14 server id 1  end_log_pos 592 	Write_rows: table id 33 flags: STMT_END_F
+
+BINLOG '
+MrtfVxMBAAAAKwAAAB4CAAAAACEAAAAAAAEAA2RiMQACdDEAAgMPAgoAAw==
+MrtfVxcBAAAAMgAAAFACAAAAACEAAAAAAAEAAv/8AQAAAAFh/AIAAAABYvwDAAAAAWM=
+'/*!*/;
+### INSERT INTO `db1`.`t1`
+### SET
+###   @1=1 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='a' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+### INSERT INTO `db1`.`t1`
+### SET
+###   @1=2 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='b' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+### INSERT INTO `db1`.`t1`
+### SET
+###   @1=3 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='c' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+# at 592
+#160614  4:07:14 server id 1  end_log_pos 619 	Xid = 10
+COMMIT/*!*/;
+# at 619
+#160614  4:08:05 server id 1  end_log_pos 686 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1465891685/*!*/;
+BEGIN
+/*!*/;
+# at 686
+# at 729
+#160614  4:08:05 server id 1  end_log_pos 729 	Table_map: `db1`.`t1` mapped to number 33
+#160614  4:08:05 server id 1  end_log_pos 779 	Delete_rows: table id 33 flags: STMT_END_F
+
+BINLOG '
+ZbtfVxMBAAAAKwAAANkCAAAAACEAAAAAAAEAA2RiMQACdDEAAgMPAgoAAw==
+ZbtfVxkBAAAAMgAAAAsDAAAAACEAAAAAAAEAAv/8AQAAAAFh/AIAAAABYvwDAAAAAWM=
+'/*!*/;
+### DELETE FROM `db1`.`t1`
+### WHERE
+###   @1=1 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='a' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+### DELETE FROM `db1`.`t1`
+### WHERE
+###   @1=2 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='b' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+### DELETE FROM `db1`.`t1`
+### WHERE
+###   @1=3 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='c' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+# at 779
+#160614  4:08:05 server id 1  end_log_pos 806 	Xid = 17
+COMMIT/*!*/;
+DELIMITER ;
+# End of log file
+ROLLBACK /* added by mysqlbinlog */;
+/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;
+[root@rhel7 mysql]# sed -n '/end_log_pos 779/,/COMMIT/p' | tail -n +2
+^C
+[root@rhel7 mysql]# mysqlbinlog -v -v rhel7.000003 |  sed -n '/end_log_pos 779/,/COMMIT/p' | tail -n +2
+
+BINLOG '
+ZbtfVxMBAAAAKwAAANkCAAAAACEAAAAAAAEAA2RiMQACdDEAAgMPAgoAAw==
+ZbtfVxkBAAAAMgAAAAsDAAAAACEAAAAAAAEAAv/8AQAAAAFh/AIAAAABYvwDAAAAAWM=
+'/*!*/;
+### DELETE FROM `db1`.`t1`
+### WHERE
+###   @1=1 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='a' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+### DELETE FROM `db1`.`t1`
+### WHERE
+###   @1=2 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='b' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+### DELETE FROM `db1`.`t1`
+### WHERE
+###   @1=3 /* INT meta=0 nullable=1 is_null=0 */
+###   @2='c' /* VARSTRING(10) meta=10 nullable=1 is_null=0 */
+# at 779
+#160614  4:08:05 server id 1  end_log_pos 806 	Xid = 17
+COMMIT/*!*/;
+

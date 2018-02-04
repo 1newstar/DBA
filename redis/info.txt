@@ -1,0 +1,122 @@
+redis info
+
+ 
+
+# 参考：http://redis.io/commands/info
+#
+#
+# Server
+redis_version:2.6.9
+redis_git_sha1:00000000
+redis_git_dirty:0
+redis_mode:standalone
+os:Linux 3.4.9-gentoo x86_64
+arch_bits:64
+multiplexing_api:epoll			# redis的事件循环机制
+gcc_version:4.6.3
+process_id:18926
+run_id:df8ad7574f3ee5136e8be94aaa6602a0079704cc	# 标识redis server的随机值
+tcp_port:6379
+uptime_in_seconds:120			# redis server启动的时间(单位s)
+uptime_in_days:0				# redis server启动的时间(单位d)
+lru_clock:321118				# Clock incrementing every minute, for LRU management TODO 不清楚是如何计算的
+
+# Clients
+connected_clients:3				# 连接的客户端数
+client_longest_output_list:0	# 当前客户端连接的最大输出列表	TODO
+client_biggest_input_buf:0		# 当前客户端连接的最大输入buffer TODO
+blocked_clients:0				# 被阻塞的客户端数
+
+# Memory
+used_memory:573456				# 使用内存，单位B
+used_memory_human:560.02K		# human read显示使用内存
+used_memory_rss:1798144			# 系统给redis分配的内存（即常驻内存）
+used_memory_peak:551744			# 内存使用的峰值大小
+used_memory_peak_human:538.81K	# human read显示内存使用峰值
+used_memory_lua:31744			# lua引擎使用的内存
+mem_fragmentation_ratio:3.14	# used_memory_rss/used_memory比例，一般情况下，used_memory_rss略高于used_memory，当内存碎片较多时，则mem_fragmentation_ratio会较大，可以反映内存碎片是否很多
+mem_allocator:jemalloc-3.3.1	# 内存分配器
+
+# Persistence
+##########################
+# rdb和aof事redis的两种持久化机制
+#
+# rdb是通过配置文件设置save的时间的改动数量来操作
+# 把上次改动后的数据达到设置的指标后保存到db
+# 如果中间发生了crash，则数据会丢失
+# 这种策略被叫做快照
+#
+# aof是持续的把写操作执行写入一个类似日志的文件
+# 但是会影响应能
+# 分为appendfsync always和appendfsync eversec
+# 前者每次写操作都同步，数据安全性高，但是特别消耗性能
+# 后者每秒同步一次，如果发生crash，则可能会丢失1s的数据
+##########################
+loading:0						#
+rdb_changes_since_last_save:0	# 自上次dump后rdb的改动
+rdb_bgsave_in_progress:0		# 标识rdb save是否进行中
+rdb_last_save_time:1366359865	# 上次save的时间戳
+rdb_last_bgsave_status:ok		# 上次的save操作状态
+rdb_last_bgsave_time_sec:-1		# 上次rdb save操作使用的时间(单位s)
+rdb_current_bgsave_time_sec:-1	# 如果rdb save操作正在进行，则是所使用的时间
+----------------------------
+aof_enabled:0					# 是否开启aof，默认没开启
+aof_rewrite_in_progress:0		# 标识aof的rewrite操作是否在进行中
+aof_rewrite_scheduled:0			# 标识是否将要在rdb save操作结束后执行
+aof_last_rewrite_time_sec:-1	# 上次rewrite操作使用的时间(单位s)
+aof_current_rewrite_time_sec:-1 # 如果rewrite操作正在进行，则记录所使用的时间
+aof_last_bgrewrite_status:ok	# 上次rewrite操作的状态
+-----------------------------
+# 开启aof后增加的一些info信息
+aof_current_size:0				# aof当前大小
+aof_base_size:0					# aof上次启动或rewrite的大小
+aof_pending_rewrite:0			# 同上面的aof_rewrite_scheduled
+aof_buffer_length:0				# aof buffer的大小
+aof_rewrite_buffer_length:0		# aof rewrite buffer的大小
+aof_pending_bio_fsync:0			# 后台IO队列中等待fsync任务的个数
+aof_delayed_fsync:0				# 延迟的fsync计数器 TODO
+-----------------------------
+
+# Stats
+total_connections_received:7	# 自启动起连接过的总数
+total_commands_processed:7		# 自启动起运行命令的总数
+instantaneous_ops_per_sec:0		# 每秒执行的命令个数
+rejected_connections:0			# 因为最大客户端连接书限制，而导致被拒绝连接的个数
+expired_keys:0					# 自启动起过期的key的总数
+evicted_keys:0					# 因为内存大小限制，而被驱逐出去的键的个数
+keyspace_hits:0					# 在main dictionary(todo)中成功查到的key个数
+keyspace_misses:0				# 同上，未查到的key的个数
+pubsub_channels:0				# 发布/订阅频道数
+pubsub_patterns:0				# 发布/订阅模式数
+latest_fork_usec:0				# 上次的fork操作使用的时间（单位ms）
+##########################
+# pubsub是一种消息传送的方式，分为频道和模式两种
+# 消息不支持持久化，消息方中断后再连接，前面的消息就会没了
+# 频道是指通过SUBSCRIBE指定一个固定的频道来订阅
+# 模式是指通过PSUBSCRIBE模式匹配来订阅相关的匹配给定模式的频道
+##########################
+
+# Replication
+role:master						# 角色
+connected_slaves:1				# 连接的从库数
+slave0:127.0.0.1,7777,online
+-----------------------------
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:4
+master_sync_in_progress:0		# 标识主redis正在同步到从redis
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+
+# CPU
+used_cpu_sys:0.00			# redis server的sys cpu使用率
+used_cpu_user:0.12			# redis server的user cpu使用率
+used_cpu_sys_children:0.00	# 后台进程的sys cpu使用率
+used_cpu_user_children:0.00	# 后台进程的user cpu使用率
+
+# Keyspace
+db0:keys=2,expires=0
+db1:keys=1,expires=0

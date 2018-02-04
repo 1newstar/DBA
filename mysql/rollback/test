@@ -1,0 +1,53 @@
+#170718 11:40:45 server id 1  end_log_pos 637 CRC32 0x8d748cf5 	Write_rows: table id 148 flags: STMT_END_F
+INSERT INTO `ks`.`x2_session`
+SET
+  @1='pu0qc0m90a0ffak0s98cihu206' 
+  @2=0 
+  @3='' 
+  @4='' 
+  @5='91.214.117.173' 
+  @6=0 
+  @7=0 
+  @8='' 
+  @9='' 
+  @10=0 
+  @11=0 
+  @12=0 
+  @13=0 
+#170718 11:40:45 server id 1  end_log_pos 1099 CRC32 0x2cd6795f 	Update_rows: table id 148 flags: STMT_END_F
+UPDATE `ks`.`x2_session`
+WHERE
+  @1='pu0qc0m90a0ffak0s98cihu206' 
+  @2=0 
+  @3='' 
+  @4='' 
+  @5='91.214.117.173' 
+  @6=0 
+  @7=0 
+  @8='' 
+  @9='' 
+  @10=0 
+  @11=0 
+  @12=0 
+  @13=0 
+SET
+  @1='pu0qc0m90a0ffak0s98cihu206' 
+  @2=0 
+  @3='' 
+  @4='' 
+  @5='91.214.117.173' 
+  @6=0 
+  @7=0 
+  @8='' 
+  @9='' 
+  @10=0 
+  @11=0 
+  @12=1500349245 
+  @13=0 
+#170728 11:04:21 server id 1  end_log_pos 1439553 CRC32 0x2dd0445c 	Delete_rows: table id 140 flags: STMT_END_F
+DELETE FROM `ks`.`x2_quest2knows`
+WHERE
+  @1=1219 
+  @2=1226 
+  @3=7 
+  @4=0

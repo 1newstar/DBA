@@ -1,0 +1,84 @@
+[root@ToBeRoot redis]# cat index.php
+<?php
+   //Connecting to Redis server on localhost 
+   $redis = new Redis(); 
+   $redis->connect('127.0.0.1', 6379); 
+   echo "人气最高的五位用户为：\n"; 
+   // Get the stored data and print it 
+   $content = $redis->lrange("5name",0,4);
+   if ($content == null)
+   {
+       $conn=mysql_connect("localhost", "root", "(Uploo00king)");
+       $result=mysql_db_query("uplooking", "select name from gai order by  updatetime desc limit 5", $conn);
+       // 获取查询结果
+       for ($i=0; $i<5; $i++)
+       {
+          $row=mysql_fetch_row($result);
+          echo $row[0];
+	  $redis->rpush("5name",$row[0]);
+          echo "\n";
+       }
+       $redis->expire("5name", 60); 
+       // 释放资源
+       mysql_free_result($result);
+       // 关闭连接
+       mysql_close($conn);
+
+   }
+   else
+   {
+       for ($i=0; $i<5; $i++)
+       {
+	  echo " " .$content[$i];
+          echo "\n";
+       }
+   }
+?>
+
+[root@ToBeRoot html]# cat index.php 
+<?php
+ $conn=mysql_connect("localhost", "root", "(Uploo00king)");             
+ $result=mysql_db_query("uplooking", "select name from gai order by  updatetime desc limit 5", $conn);
+    // 获取查询结果
+    
+echo "人气最高的五位用户为：\n";     
+    // 循环取出记录
+      for ($i=0; $i<5; $i++ )
+      {
+        $row=mysql_fetch_row($result);
+        echo $row[0];
+        echo "\n";
+      }
+
+   
+    // 释放资源
+    mysql_free_result($result);
+    // 关闭连接
+    mysql_close($conn);  
+?> 
+
+redis 没有缓冲时：
+
+首页速度
+html/index
+real	0m0.020s
+
+
+
+首页速度
+redis/index
+real	0m0.022s
+
+
+
+存在redis缓冲时
+首页速度
+html/index
+real	0m0.020s
+
+
+首页速度
+redis/index
+real	0m0.019s
+
+

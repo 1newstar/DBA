@@ -1,0 +1,40 @@
+iostat -xkd 1
+
+[mysqld]
+#导入数据时，一个sql很大
+max_allowed_packet = 20M
+
+
+在mysql控制台修改,无需重启mysqld服务
+
+
+
+#开启慢查询日志记录
+#查询时间超过0.1秒的sql语句会被记录
+#记录慢查询日志的文件地址
+#记录没有使用索引的查询
+
+set global slow_query_log=on;
+set global long_query_time=0.1;
+#set global slow_query_log_file="/var/lib/mysql/localhost-slow.log";
+set global log_queries_not_using_indexes=on;
+
+show variables like '%slow_query%';
+show global variables like '%indexes%';
+show global variables like '%long_query%';  
+show variables like  '%min_examined_row_limit%';  
+
+# 第一个参数log_queries_not_using_indexes表示是否开启记录没有index的查询，第二个参数log_throttle_queries_not_using_indexes用来做日志记录的流量控制，一分钟可以记录多少条，默认0是表示不限制。
+#long_query_time超过指定时长的查询开关
+#min_examined_row_limit超过指定行数的扫描查询开关
+
+mysqldumpslow -s t -t 1 xx.log
+
+show global status like 'open%tables%';
+show variables like '%table%cache%';
+
+set global table_open_cache=2048;
+set global table_definition_cache=2048;
+
+
+set global join_buffer_size=2097152;

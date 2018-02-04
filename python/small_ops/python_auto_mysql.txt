@@ -1,0 +1,27 @@
+from multiprocessing import Process
+import os
+
+#q = []
+
+
+def worker(sql):
+    print os.popen(sql).read()
+
+
+
+if __name__ == '__main__':
+    sql = '''
+mysql -uroot -p"(Uploo00king)" tst -e "
+SELECT achi.yswf_code, achi.real_name, COUNT(*), SUM(achi.sale)
+FROM fx_achievement achi
+WHERE 1 = 1
+	AND achi.founder_code = 'AAZD'
+	AND achi.card_level IN ('4', '5')
+	AND achi.pay_date >= '2017-03-01 00:00:00'
+	AND achi.pay_date < '2017-03-27 12:23:05'
+GROUP BY achi.yswf_code, achi.real_name
+LIMIT 10"
+'''
+    for i in xrange(2):
+        p = Process(target=worker, args=(sql,))
+        p.start()

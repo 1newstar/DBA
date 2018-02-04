@@ -1,0 +1,18 @@
+<html>
+<head>
+  <title>Linux OS INFO</title>
+</head>
+<body>
+  {% if message %}
+  <p style="color:red">{{ message }}</p>
+  {% endif %}
+  <form action="/{{ name }}" method="post">
+    <legend>Please sign in:</legend>
+    <p><input name="hostname" placeholder="Hostname" value="{{ hostname }}"></p>
+    <p><input name="port" placeholder="Port" value="{{ port }}"></p>
+    <p><input name="username" placeholder="Username" value="{{ username }}"></p>
+    <p><input name="password" placeholder="Password" value="{{ password }}"></p>
+    <p><button type="submit">COMMIT</button></p>
+  </form>
+</body>
+</html>
