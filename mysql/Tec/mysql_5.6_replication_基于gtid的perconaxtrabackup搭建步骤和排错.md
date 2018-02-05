@@ -1,6 +1,6 @@
 # AB rplication 搭建步骤
 
-> 从库当前用户名和密码 mysql -uroot -p'cqhjkj624991557.'
+> 从库当前用户名和密码 mysql -uroot -p'xxx'
 
 ## 一、主从搭建步骤
 
@@ -58,7 +58,7 @@ systemctl start mysqld
 
 8. 配置主从
 
-- 1. `change master to master_user='repluser',master_password='replpass',master_host='119.90.40.222',master_auto_position=1;`
+- 1. `change master to master_user='repluser',master_password='xxx',master_host='xxx',master_auto_position=1;`
 
 - 2. `start slave;`
 
@@ -486,7 +486,7 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql> update mysql.user set password=password('cqhjkj624991557.') where user='root' and host='localhost';
+mysql> update mysql.user set password=password('xxx') where user='root' and host='localhost';
 Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
@@ -498,7 +498,7 @@ Bye
 
 [root@hjkj-mysql data]# vim /etc/my.cnf
 [root@hjkj-mysql data]# systemctl restart mysqld
-[root@hjkj-mysql data]# alias booboo="mysql -uroot -p'cqhjkj624991557.'"
+[root@hjkj-mysql data]# alias booboo="mysql -uroot -p'xxx'"
 [root@hjkj-mysql data]# booboo
 Warning: Using a password on the command line interface can be insecure.
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -522,7 +522,7 @@ Query OK, 0 rows affected, 1 warning (0.01 sec)
 mysql> show slave status\G;
 *************************** 1. row ***************************
                Slave_IO_State: 
-                  Master_Host: 119.90.40.222
+                  Master_Host: xxx
                   Master_User: repluser
                   Master_Port: 3306
                 Connect_Retry: 60
@@ -607,7 +607,7 @@ No query specified
 mysql> mysql> sho status\G;
 *************************** 1. row ***************************
                Slave_IO_State: System lock
-                  Master_Host: 119.90.40.222
+                  Master_Host: xxx
                   Master_User: repluser
                   Master_Port: 3306
                 Connect_Retry: 60
@@ -690,7 +690,7 @@ mysql> show variables like '%gtid%';
 mysql> show slave status\G;
 *************************** 1. row ***************************
                Slave_IO_State: System lock
-                  Master_Host: 119.90.40.222
+                  Master_Host: xxx
                   Master_User: repluser
                   Master_Port: 3306
                 Connect_Retry: 60
@@ -776,7 +776,7 @@ No query specified
 mysql> show slave status\G;
 *************************** 1. row ***************************
                Slave_IO_State: Waiting for master to send event
-                  Master_Host: 119.90.40.222
+                  Master_Host: xxx
                   Master_User: repluser
                   Master_Port: 3306
                 Connect_Retry: 60
